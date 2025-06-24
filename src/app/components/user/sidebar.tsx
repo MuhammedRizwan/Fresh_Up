@@ -1,6 +1,7 @@
 'use client';
 
 import { Search } from "lucide-react";
+import { Dispatch, SetStateAction } from "react";
 const users = [
     {
         sender: 'Nancy J. Martinez',
@@ -50,11 +51,23 @@ const users = [
         unreadCount: 5,
     },
 ];
-export default function Sidebar() {
+
+interface SidebarProps {
+    view: "sidebar" | "chatarea" | "profile",
+    setView: Dispatch<SetStateAction<"sidebar" | "chatarea" | "profile">>
+}
+
+function truncateWithEllipsis(text: string, maxLength = 55) {
+    return text.length > maxLength
+        ? text.slice(0, maxLength).replace(/\.*$/, '') + '...'
+        : text;
+}
+
+export default function Sidebar({ view, setView }: SidebarProps) {
     return (
         <div className="w-full bg-zinc-800 min-h-screen">
             <div className="w-full py-5 bg-zinc-950 border-b-3 border-zinc-950">
-                <div className="mx-auto w-11/12">
+                <div className="mx-auto w-9/12 md:w-11/12">
                     <div className="relative">
                         <input
                             type="text"
@@ -65,10 +78,11 @@ export default function Sidebar() {
                     </div>
                 </div>
             </div>
-            <div className="w-full px-3 mt-5">
+            <div className="w-full px-7 md:px-3 mt-5">
                 <div className="space-y-2">
                     {users.map((user, index) => (
-                        <div key={index} className={`flex items-center p-3 rounded-lg ${user.highlighted ? 'bg-gradient-to-r from-pink-500 to-purple-500' : 'bg-zinc-900'} ${user.unread ? 'font-bold' : ''}`}>
+                        <div key={index} className={`flex items-center p-5 md:p-3 rounded-lg ${user.highlighted ? 'bg-gradient-to-r from-pink-500 to-purple-500' : 'bg-zinc-900'} ${user.unread ? 'font-bold' : ''}`}
+                            onClick={() => setView('chatarea')}>
                             <div className="w-10 h-10 rounded-full bg-gray-600 mr-3 flex items-center justify-center">
                                 <span className="text-white">{user.sender[0]}</span>
                             </div>
@@ -94,8 +108,3 @@ export default function Sidebar() {
     );
 }
 
-function truncateWithEllipsis(text: string, maxLength = 55) {
-    return text.length > maxLength
-        ? text.slice(0, maxLength).replace(/\.*$/, '') + '...'
-        : text;
-}

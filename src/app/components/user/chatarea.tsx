@@ -1,4 +1,5 @@
 import { Paperclip, Send, Smile, UserPlus } from "lucide-react";
+import { Dispatch, SetStateAction } from "react";
 
 const messages = [
     {
@@ -41,15 +42,20 @@ const messages = [
         isSelf: true,
     },
 ];
-export default function ChatArea() {
+
+interface ChatareaProps {
+    view: "sidebar" | "chatarea" | "profile",
+    setView: Dispatch<SetStateAction<"sidebar" | "chatarea" | "profile">>
+}
+export default function ChatArea({view,setView}:ChatareaProps) {
     return (
-        <div className="w-2/4 bg-zinc-800 text-white flex flex-col">
+        <div className={`w-full ${view==='chatarea'?'block':'hidden'} md:block md:w-2/4  bg-zinc-800 text-white flex flex-col`}>
             <div className="w-full p-5 flex justify-between items-center bg-zinc-950">
                 <div className="flex items-center">
                     <div className="w-10 h-10 rounded-full bg-gray-700 mr-3 flex justify-center items-center">
                         <span className="text-white font-bold">J</span>
                     </div>
-                    <div>
+                    <div onClick={()=>setView('profile')}>
                         <h2 className="text-lg font-bold">Jennifer Lisity</h2>
                         <p className="text-xs text-green-400">Active now</p>
                     </div>

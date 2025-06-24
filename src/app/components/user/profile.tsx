@@ -1,6 +1,13 @@
-export default function Profile() {
+import { Dispatch, SetStateAction } from "react";
+
+interface ProfileProps {
+    view: "sidebar" | "chatarea" | "profile",
+    setView: Dispatch<SetStateAction<"sidebar" | "chatarea" | "profile">>
+}
+
+export default function Profile({view,setView}:ProfileProps) {
   return (
-    <div className="w-1/4 bg-gradient-to-b from-gray-900 to-black text-white h-screen p-6 shadow-lg">
+    <div className={`w-full ${view === 'profile'? 'block':'hidden'} md:block md:w-1/4 bg-gradient-to-b from-gray-900 to-black text-white h-screen p-6 shadow-lg`}>
       <div className="flex flex-col items-center">
         <h1 className="text-xl font-bold mb-10">Personal Info</h1>
         <div className="bg-red-700 rounded-full p-1 border-none">
